@@ -1,0 +1,38 @@
+{
+    "name": "umimood/dearapi",
+    "description": "PHP Library for dear systems API v2 https://dearinventory.docs.apiary.io",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Umair Mahmood",
+            "email": "umair.mahmood22@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7",
+        "guzzlehttp/guzzle": "^6.3",
+        "cartalyst/stripe": "^2.2",
+      "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "UmiMood\\Dear\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "UmiMood\\Dear\\Test\\" : "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "prefer-stable": true,
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
