@@ -1,15 +1,18 @@
 <?php
 
-namespace UmiMood\Dear;
-
 /**
- * Class Dear
+ * Part of Dear package.
  *
+ * @package Dear
+ * @version 1.0
  * @author Umair Mahmood
- * @version 2.0
- * @package UmiMood\Dear
+ * @license MIT
+ * @copyright Copyright (c) 2019 Umair Mahmood
  *
  */
+
+namespace UmiMood\Dear;
+
 class Dear
 {
     /**
