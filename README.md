@@ -1,6 +1,6 @@
 # dear-api
 [![Build Status](https://travis-ci.com/UmiMood/dear-api.svg?token=4CfuxCuzvs5i12ZugsAZ&branch=master)](https://travis-ci.com/UmiMood/dear-api)
-
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UmiMood/dear-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UmiMood/dear-api/?branch=master)
 PHP Library for [dear systems](https://dearinventory.docs.apiary.io) API v2.
 
 ## Requirements
