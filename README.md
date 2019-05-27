@@ -1,5 +1,5 @@
 # dear-api
-[![Build Status](https://travis-ci.com/UmiMood/dear-api.svg?token=4CfuxCuzvs5i12ZugsAZ&branch=2)](https://travis-ci.com/UmiMood/dear-api)
+[![Build Status](https://travis-ci.com/UmiMood/dear-api.svg?token=4CfuxCuzvs5i12ZugsAZ&branch=master)](https://travis-ci.com/UmiMood/dear-api)
 
 PHP Library for [dear systems](https://dearinventory.docs.apiary.io) API v2.
 
