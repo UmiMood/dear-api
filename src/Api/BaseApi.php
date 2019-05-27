@@ -188,7 +188,7 @@ abstract class BaseApi implements RESTApi
     protected function handleClientException(ClientException $e)
     {
         $response = $e->getResponse();
-        switch ($response->getStatusCode()) {
+        switch ($e->getCode()) {
             case 400:
                 $exceptionClass = BadRequestException::class;
                 break;
@@ -218,7 +218,7 @@ abstract class BaseApi implements RESTApi
                 break;
         }
 
-        $exceptionInstance = new $exceptionClass($e->getMessage());
+        $exceptionInstance = new $exceptionClass($e->getCode().' -- '.$e->getMessage());
         $exceptionInstance->setStatusCode($response->getStatusCode());
 
         throw $exceptionInstance;
