@@ -171,6 +171,13 @@ abstract class BaseApi implements RESTApi
             return \GuzzleHttp\json_decode((string)$response->getBody(), true);
 
         } catch (ClientException $clientException) {
+            if ($clientException->getResponse()->getStatusCode() === 503) {
+                // API calls limit exceeded
+                sleep(1);
+
+                return $this->execute($httpMethod, $parameters);
+            }
+
             return $this->handleClientException($clientException);
         }
     }
