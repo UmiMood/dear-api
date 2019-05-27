@@ -12,6 +12,7 @@ PHP Library for [dear systems](https://dearinventory.docs.apiary.io) API v2.
 ## Installation
 
 ```bash
+composer require umimood/dearapi
 ```
 
 Otherwise just download the package and add it to the autoloader.
