@@ -4,6 +4,7 @@ namespace UmiMood\Dear\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use UmiMood\Dear\Api\Contracts\DeleteMethodAllowed;
 use UmiMood\Dear\Api\Contracts\PostMethodAllowed;
 use UmiMood\Dear\Api\Contracts\PutMethodAllowed;
@@ -36,10 +37,12 @@ abstract class BaseApi implements RESTApi
      * Default page
      */
     const PAGE = 1;
+
     /**
      * HTTP request content type
      */
     const CONTENT_TYPE = 'application/json';
+
     /**
      * @var Config
      */
@@ -171,14 +174,17 @@ abstract class BaseApi implements RESTApi
             return \GuzzleHttp\json_decode((string)$response->getBody(), true);
 
         } catch (ClientException $clientException) {
-            if ($clientException->getResponse()->getStatusCode() === 503) {
-                // API calls limit exceeded
-                sleep(1);
+            return $this->handleClientException($clientException);
+
+        } catch (ServerException $serverException) {
+            if ($serverException->getResponse()->getStatusCode() === 503) {
+                // API limit exceeded
+                sleep(5);
 
                 return $this->execute($httpMethod, $parameters);
             }
 
-            return $this->handleClientException($clientException);
+            return $this->handleServerException($serverException);
         }
     }
 
@@ -188,7 +194,7 @@ abstract class BaseApi implements RESTApi
     protected function handleClientException(ClientException $e)
     {
         $response = $e->getResponse();
-        switch ($e->getCode()) {
+        switch ($response->getStatusCode()) {
             case 400:
                 $exceptionClass = BadRequestException::class;
                 break;
@@ -205,6 +211,26 @@ abstract class BaseApi implements RESTApi
                 $exceptionClass = MethodNotAllowedException::class;
                 break;
 
+            default:
+                $exceptionClass = DearApiException::class;
+                break;
+        }
+
+        $exceptionInstance = new $exceptionClass($e->getMessage());
+        $exceptionInstance->setStatusCode($response->getStatusCode());
+
+        throw $exceptionInstance;
+    }
+
+    /**
+     * @param ServerException $e
+     */
+    protected function handleServerException(ServerException $e)
+    {
+        $response = $e->getResponse();
+        switch ($response->getStatusCode()) {
+
+
             case 500:
                 $exceptionClass = InternalServerErrorException::class;
                 break;
@@ -218,7 +244,7 @@ abstract class BaseApi implements RESTApi
                 break;
         }
 
-        $exceptionInstance = new $exceptionClass($e->getCode().' -- '.$e->getMessage());
+        $exceptionInstance = new $exceptionClass($e->getMessage());
         $exceptionInstance->setStatusCode($response->getStatusCode());
 
         throw $exceptionInstance;
