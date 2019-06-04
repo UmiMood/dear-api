@@ -110,6 +110,10 @@ class DearTest extends TestCase
             case "UnitOfMeasure":
                 return $response["ID"];
                 break;
+
+            case "Webhooks":
+                return $response["ID"];
+                break;
         }
     }
 
@@ -191,7 +195,7 @@ class DearTest extends TestCase
             $this->assertNotEmpty($response, "Test: Account");
         }
     }
-    
+
     public function testGetEndpoints()
     {
         foreach (self::$methods as $method) {
@@ -1125,6 +1129,38 @@ class DearTest extends TestCase
             "UOM" => "Item",
             "Option1Name" => "Option 1",
             "PriceTier1" => 140.0000,
+        ];
+    }
+
+    public function testWebhooks()
+    {
+        $response = $this->application->webhooks()->get([]);
+        $this->assertNotEmpty($response);
+
+        $webhookParams = $this->createWebhooks();
+        $response = $this->application->webhooks()->create($webhookParams);
+        $id = $this->getId($response, __FUNCTION__);
+        $this->assertNotNull($id);
+
+        $response = $this->application->webhooks()->update($id, $webhookParams);
+        $this->assertNotEmpty($response['ID']);
+
+        $response = $this->application->webhooks()->delete($id, []);
+        $this->assertArrayHasKey('Webhooks', $response);
+    }
+
+    protected function createWebhooks()
+    {
+        $randomCode = $this->getRandomCode();
+        return [
+            "Type" => "Sale/OrderAuthorised",
+            "IsActive" => true,
+            "ExternalURL" => "http://127.0.0.1/webhooks/",
+	        "Name" => "Order Authorised $randomCode",
+            "ExternalAuthorizationType" => "basicauth",
+            "ExternalUserName" => "$randomCode",
+            "ExternalPassword" => "$randomCode",
+            "ExternalBearerToken" => ""
         ];
     }
 }
